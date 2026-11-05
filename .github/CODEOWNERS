@@ -1,0 +1,19 @@
+# CODEOWNERS
+#
+# The enrichment workflow reads this file to name the team that owns the code an
+# issue concerns, and says so in its routing comment. Every rule below is
+# commented out, so until you add your own, routing comments say that no owning
+# team is configured.
+#
+# Point rules at teams or users that exist in your organization. GitHub silently
+# ignores owners it cannot resolve, so run the "Factory doctor" workflow after
+# editing: it reports syntax errors and unknown owners.
+#
+# Syntax: https://docs.github.com/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+#
+# Examples (replace with your own paths and teams):
+#
+# *                     @your-org/platform-team
+# /src/payments/        @your-org/payments-team
+# /docs/                @your-org/docs-team
+# /.github/             @your-org/platform-team

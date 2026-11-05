@@ -1,0 +1,37 @@
+name: Factory doctor
+
+# Checks that the factory is fully configured, using the real secrets, and
+# writes a pass/warn/fail report to the run summary. Changes nothing.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+  issues: read
+
+jobs:
+  doctor:
+    if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+    environment: factory
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+
+      - name: Check the factory
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_AW_READ_PROJECT_TOKEN: ${{ secrets.GH_AW_READ_PROJECT_TOKEN }}
+          GH_AW_AGENT_TOKEN: ${{ secrets.GH_AW_AGENT_TOKEN }}
+          ASF_BOOTSTRAP_TOKEN_PRESENT: ${{ secrets.ASF_BOOTSTRAP_TOKEN != '' }}
+        run: node .github/factory/scripts/doctor.mjs --repo "$GITHUB_REPOSITORY" --summary "$GITHUB_STEP_SUMMARY"

@@ -1,0 +1,4 @@
+.github/workflows/*.lock.yml linguist-generated=true
+.github/factory/**/*.mjs linguist-vendored=false
+.github/factory/test/*.ts linguist-vendored=false
+.github/skills/intake-guardrails/emit.mjs linguist-vendored=false

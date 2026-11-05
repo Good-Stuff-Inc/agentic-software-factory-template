@@ -1,0 +1,14 @@
+{
+  "project": {
+    "owner": "",
+    "number": null,
+    "title": "Agentic Software Factory"
+  },
+  "ruleset": {
+    "enabled": true,
+    "requiredApprovals": 1
+  },
+  "security": {
+    "enabled": true
+  }
+}

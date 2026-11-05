@@ -1,0 +1,21 @@
+{
+  "name": "agentic-software-factory-tooling",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Setup, health-check and guardrail tooling for the Agentic Software Factory.",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsc --noEmit",
+    "test": "vitest run",
+    "setup": "node scripts/setup.mjs",
+    "doctor": "node scripts/doctor.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.12"
+  }
+}

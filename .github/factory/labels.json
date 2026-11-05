@@ -1,0 +1,14 @@
+{
+  "labels": [
+    { "name": "type:bug", "color": "d73a4a", "description": "Existing behaviour is wrong" },
+    { "name": "type:feature", "color": "0e8a16", "description": "New user-visible capability" },
+    { "name": "type:chore", "color": "c5def5", "description": "Maintenance, tooling, dependencies or docs" },
+    { "name": "priority:P0", "color": "b60205", "description": "Outage, data loss or security incident" },
+    { "name": "priority:P1", "color": "d93f0b", "description": "Materially wrong behaviour, no acceptable workaround" },
+    { "name": "priority:P2", "color": "fbca04", "description": "Real value, but the business survives without it" },
+    { "name": "priority:P3", "color": "bfd4f2", "description": "Nice to have" },
+    { "name": "asf:from-transcript", "color": "5319e7", "description": "Entered through an Agentic Software Factory intake adapter" },
+    { "name": "needs-assignment", "color": "fef2c0", "description": "Waiting for a human to staff it; deliberately not auto-assigned" },
+    { "name": "agent-triaged", "color": "1d76db", "description": "Classified by issue enrichment and handed to the Copilot coding agent" }
+  ]
+}

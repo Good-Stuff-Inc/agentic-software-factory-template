@@ -1,0 +1,73 @@
+name: Factory setup
+
+# Provisions everything the factory needs that a template cannot copy: labels,
+# the project board and its fields, issue types, a default-branch ruleset and
+# security features. Safe to rerun; existing settings are left in place.
+# Needs a short-lived ASF_BOOTSTRAP_TOKEN secret in the factory-bootstrap
+# environment. See docs/SETUP.md.
+
+on:
+  workflow_dispatch:
+    inputs:
+      steps:
+        description: 'Steps to run, comma-separated (labels, project, issue-types, environment, ruleset, security). Leave empty to run all.'
+        required: false
+        default: ''
+        type: string
+      dry_run:
+        description: 'Only report what would change'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: factory-setup
+  cancel-in-progress: false
+
+jobs:
+  setup:
+    if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+    # Environment secrets are only released to the default branch, unlike
+    # repository secrets, which a workflow on any branch could read.
+    environment: factory-bootstrap
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Require the bootstrap token
+        env:
+          BOOTSTRAP_TOKEN_PRESENT: ${{ secrets.ASF_BOOTSTRAP_TOKEN != '' }}
+        run: |
+          if [ "$BOOTSTRAP_TOKEN_PRESENT" != "true" ]; then
+            echo "::error::Add the ASF_BOOTSTRAP_TOKEN secret to the factory-bootstrap environment first. See docs/SETUP.md."
+            exit 1
+          fi
+
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+
+      - name: Run setup
+        env:
+          GH_TOKEN: ${{ secrets.ASF_BOOTSTRAP_TOKEN }}
+          STEPS: ${{ inputs.steps }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          args=(--repo "$GITHUB_REPOSITORY" --summary "$GITHUB_STEP_SUMMARY")
+          if [ -n "$STEPS" ]; then
+            args+=(--only "$STEPS")
+          fi
+          if [ "$DRY_RUN" = "true" ]; then
+            args+=(--dry-run)
+          else
+            args+=(--commit-config)
+          fi
+          node .github/factory/scripts/setup.mjs "${args[@]}"
